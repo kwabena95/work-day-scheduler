@@ -13,8 +13,8 @@ $(document).ready(() => {
         startTime.add('hour', 1);
         let testDiv = `
         <div class="row d-flex justify-content-center align-items-center">
-        <div class="col-3 text-right bg-danger">
-            <span>${startTime.format('hh A')}</span>
+        <div class="col-3 text-right bg-danger time">
+            <span data=${i}>${startTime.format('hh A')}</span>
         </div>
         <div class="col-6 text-center">
             <span data=${i} class="task" id=${i}>Go to gym</span>
@@ -43,6 +43,27 @@ $(document).ready(() => {
         $(textarea).html(span);
         saveTask(text)
     });
+
+    // updateHour
+    function updateHour() {
+        let currenthour = moment().hours();
+        let time = $('.time span')
+        $(time).each(function (index) {
+            let timeblock = parseInt(time[index].innerText);
+            if (timeblock < currenthour) {
+                $('.col-6').addClass('bg-danger')
+            } else if (timeblock === currenthour) {
+                $('.col-6').removeClass('bg-danger')
+                $('.col-6').addClass('bg-success')
+            } else {
+                $('.col-6').removeClass('bg-success')
+                $('.col-6').addClass('bg-primary')
+            }
+            console.log(timeblock)
+        })
+
+    }
+    updateHour()
 
     // save task
     const saveTask = (task) => {
