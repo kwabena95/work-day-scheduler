@@ -17,7 +17,7 @@ $(document).ready(() => {
             <span>${startTime.format('hh A')}</span>
         </div>
         <div class="col-6 text-center">
-            <span data=${i} class="task" id=${i}>Shoping</span>
+            <span data=${i} class="task" id=${i}>Go to gym</span>
         </div>
         <div class="col-3 bg-info rounded-right d-flex justify-content-center align-items-center py-3"><i
                 class="fas fa-save"></i></div>
@@ -28,42 +28,20 @@ $(document).ready(() => {
 
     // change span into textarea
 
-    $('.col-6').on('click', 'span', (e) => {
+    $(document).on('click', 'span.task', function () {
         let text = $(this).text().trim();
-        let taskID = $(e.target).attr('data')
-        let spanID = e.target.id
-        let span = $('.col-6')
-
-        // if (taskID === spanID) {
-        // const textarea = $('<textarea>').text(text);
-        // $(span).replaceWith(textarea);
-        // console.log(text);
-        // }
-
-        span.each((index, e) => {
-            if (span[index].id === taskID) {
-                const textarea = $('<textarea>').text(text);
-                $(span).replaceWith(textarea);
-                console.log(text);
-            }
-        })
-
+        let span = $(this).closest('.col-6')
+        const textarea = $('<textarea>').text(text);
+        $(span).html(textarea);
+        textarea.trigger('focus');
     });
 
-
-
-    // edit field
-    $('.col-6').on('blur', () => {
-
-        // grab text from span
-        const text = $(this).text().trim();
-
-        // replace textarea with span
+    $(document).on('blur', 'textarea', function () {
+        let text = $(this).val();
+        let textarea = $(this).closest('.col-6')
         const span = $('<span>').text(text);
-        $(textInput).replaceWith(span);
-
-        // display task
-        getTask(text);
+        $(textarea).html(span);
+        saveTask(text)
     });
 
     // save task
@@ -80,15 +58,21 @@ $(document).ready(() => {
     }
 
     // get task
-    // const getTask = () => {
-
-    // }
+    const getTask = () => {
+        const localStorageGetItem = localStorage.getItem('tasks');
+        if (localStorageGetItem === null) {
+            tasks = [];
+        } else {
+            tasks = JSON.parse(localStorageGetItem);
+            $('span.task').append(tasks);
+        }
+    }
+    getTask();
 
     // save button
     $('.fas').on('click', () => {
         // save input
-        saveTask(text);
-
+        saveTask();
     })
 
 
