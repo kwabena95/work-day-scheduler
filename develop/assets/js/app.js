@@ -28,62 +28,27 @@ $(document).ready(() => {
 
     // change span into textarea
 
-    $('.col-6').on('click', (e) => {
+    $('.col-6').on('click', 'span', (e) => {
+        let text = $(this).text().trim();
         let taskID = $(e.target).attr('data')
         let spanID = e.target.id
-        let span = $('.col-6 span')
-        console.log(span)
+        let span = $('.col-6')
 
-        if (taskID === spanID) {
-            const textInput = $('<textarea>').addClass('form-control');
-            span.replaceWith(textInput);
-            console.log('data: ', taskID)
-            console.log('id: ', spanID)
-        } else {
-
-            console.log('false')
-        }
-
-        // span.each(index =>{})
-
-
-
-        // if (taskID === $('span')) {
-        //     // replace span with textarea
-        //     const textInput = $('<textarea>').addClass('form-control');
-        //     $('.col-6 data').replaceWith(textInput);
+        // if (taskID === spanID) {
+        // const textarea = $('<textarea>').text(text);
+        // $(span).replaceWith(textarea);
+        // console.log(text);
         // }
 
-
-
-
-
-        // // auto focus new element
-        // textInput.trigger('focus');
-        // saveTask(text);
-
-        // console.log(e.target.id);
-
-
-        // console.log($(e.currentTarget).hasClass('task1') == e.currentTarget.id)
-        // console.log(e.currentTarget.id)
+        span.each((index, e) => {
+            if (span[index].id === taskID) {
+                const textarea = $('<textarea>').text(text);
+                $(span).replaceWith(textarea);
+                console.log(text);
+            }
+        })
 
     });
-
-    // document.querySelectorAll('.task').forEach((i) => {
-    //     i.addEventListener('click', (e) => {
-    //         console.log(e.target.getAttribute('data'))
-    //         var textarea = document.createElement('textarea')
-    //         console.log(textarea)
-    //     })
-    // })
-
-
-    // $('<div/>', {
-    //     class: 'row d-flex justify-content-center align-items-center'
-    // }).appendTo('#mySelector');
-
-
 
 
 
@@ -101,8 +66,8 @@ $(document).ready(() => {
         getTask(text);
     });
 
-    // get task
-    const getTask = (task) => {
+    // save task
+    const saveTask = (task) => {
         const localStorageGetItem = localStorage.getItem('tasks');
         if (localStorageGetItem === null) {
             tasks = [];
@@ -111,17 +76,18 @@ $(document).ready(() => {
         }
 
         tasks.push(task);
-    }
-
-    // save task
-    const saveTask = (task) => {
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }
+
+    // get task
+    // const getTask = () => {
+
+    // }
 
     // save button
     $('.fas').on('click', () => {
         // save input
-        saveTask();
+        saveTask(text);
 
     })
 
